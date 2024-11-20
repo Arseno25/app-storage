@@ -96,6 +96,7 @@ class DocumentResource extends Resource
             'index' => Pages\ListDocuments::route('/'),
             'create' => Pages\CreateDocument::route('/create'),
             'edit' => Pages\EditDocument::route('/{record}/edit'),
+            'view' => Pages\EditDocument::route('/{record}'),
         ];
     }
 
