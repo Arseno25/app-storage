@@ -12,6 +12,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Facades\Storage;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
+use ZipArchive;
 
 class ViewDocument extends ViewRecord
 {
