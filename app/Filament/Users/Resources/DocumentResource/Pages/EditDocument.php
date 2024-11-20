@@ -5,6 +5,7 @@ namespace App\Filament\Users\Resources\DocumentResource\Pages;
 use App\Filament\Users\Resources\DocumentResource;
 use App\Models\User;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -23,40 +24,67 @@ class EditDocument extends EditRecord
         ];
     }
 
-    protected function beforeSave(): void
+    protected function afterSave(): void
     {
         $userId = $this->data['user_id'];
         $user = User::find($userId);
+        $senderNumber = Auth::user()->phone_number;
+
         $sender = Auth::user()->name;
 
         $phoneNumber = $user->phone_number;
 
-        $message = `Halo {$user->name}, {$sender} telah menguload dokumen baru dengan status {$this->data['status']}.
-        Segera cek dokumen baru yang telah diupload.`;
+        $recordId = is_array($this->record) ? $this->record['id'] : $this->record->id;
 
-        $this->sendWhatsAppNotification($phoneNumber, $message, $sender);
+        $message = sprintf(
+            "Halo *%s*,\n\n%s telah mengupdate dokumen dengan status: *%s*.
+            \n\nSegera cek dokumen yang telah diupdate.\n\nUrl: %s",
+            $user->name,
+            $sender,
+            $this->data['status'],
+            ENV('APP_URL').'/users/document/'. $recordId
+        );
+
+        Notification::make()
+            ->title('New File Uploaded successfully')
+            ->body($this->data['description'])
+            ->warning()
+            ->sendToDatabase($user);
+
+        $this->sendWhatsAppNotification($phoneNumber, $message, $senderNumber);
     }
 
-    protected function sendWhatsAppNotification(string $phoneNumber, string $message, string $sender): void
+    protected function sendWhatsAppNotification(string $phoneNumber, string $message, string $senderNumber): void
     {
-        $apiUrl = "https://gateway.senodev.com/send-message";
+        $apiUrl = "https://mpwa.senotekno.com/send-message";
 
-        try {
-            $response = Http::withHeaders([
-                'Content-Type'  => 'application/json',
-            ])->post($apiUrl, [
-                'api_key'  => 'CUKRLn1gbfIoRSiVDkEIIleYk3thvp',
-                'sender' => $sender,
-                'phone'   => $phoneNumber,
-                'message' => $message,
-            ]);
+        $data = [
+            'api_key' => 'P8eJZbJpZTIjVdClfV0H7ZCzFSoNvG',
+            'sender' => $senderNumber,
+            'number' => $phoneNumber,
+            'message' => $message,
+        ];
 
-            if ($response->failed()) {
-                throw new \Exception('Gagal mengirim notifikasi WhatsApp: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage());
-        }
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $apiUrl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
 
     }
 }

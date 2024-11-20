@@ -34,6 +34,7 @@ class UsersPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Violet,
             ])
+            ->databaseNotifications()
             ->login(UsersLogin::class)
             ->registration(Register::class)
             ->discoverResources(in: app_path('Filament/Users/Resources'), for: 'App\\Filament\\Users\\Resources')

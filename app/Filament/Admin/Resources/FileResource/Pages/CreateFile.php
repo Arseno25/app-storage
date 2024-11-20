@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\FileResource\Pages;
 
 use App\Filament\Admin\Resources\FileResource;
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -35,7 +36,14 @@ class CreateFile extends CreateRecord
             $this->data['status'],
             ENV('APP_URL').'/admin/files/'. $recordId
         );
+
+        Notification::make()
+            ->title('New File Uploaded successfully')
+            ->body('Test')
+            ->sendToDatabase($user);
+
         $this->sendWhatsAppNotification($phoneNumber, $message, $senderNumber);
+
     }
 
     #[NoReturn]
@@ -70,8 +78,5 @@ class CreateFile extends CreateRecord
         $response = curl_exec($curl);
 
         curl_close($curl);
-
-
-
     }
 }
