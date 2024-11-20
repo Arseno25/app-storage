@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\UsersLogin;
+use App\Filament\Users\Pages\Auth\Register;
 use App\Livewire\UserInfoComponent;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -29,10 +30,12 @@ class UsersPanelProvider extends PanelProvider
         return $panel
             ->id('users')
             ->path('users')
+            ->brandName('Storage Room')
             ->colors([
                 'primary' => Color::Violet,
             ])
             ->login(UsersLogin::class)
+            ->registration(Register::class)
             ->discoverResources(in: app_path('Filament/Users/Resources'), for: 'App\\Filament\\Users\\Resources')
             ->discoverPages(in: app_path('Filament/Users/Pages'), for: 'App\\Filament\\Users\\Pages')
             ->pages([

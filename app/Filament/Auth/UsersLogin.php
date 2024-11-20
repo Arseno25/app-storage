@@ -16,7 +16,7 @@ class UsersLogin extends BaseAuth
 
     public function getHeading(): string|Htmlable
     {
-        return __('Users Login');
+        return __('User Login');
     }
 
     /**

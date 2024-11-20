@@ -52,6 +52,12 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            $user->assignRole('users');
+        });
+    }
 
     /**
      * @throws \Exception
