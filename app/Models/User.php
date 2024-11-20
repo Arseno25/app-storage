@@ -57,16 +57,8 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        $user=Auth::user();
-
-        if($user->hasRole('super_admin')){
-            return true;
-        }
-        
-        if($user->hasRole('users') && $panel->getId() === 'users'){
-            return true;
-        }
-        return false;
+        return $this->hasRole(config('filament-shield.super_admin.name')) ||
+            $this->hasRole(config('filament-shield.users.name'));
     }
 
     public function file():HasMany
