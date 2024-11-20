@@ -6,15 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-curl": "*",
         "ext-zip": "*",
         "bezhansalleh/filament-shield": "^3.3",
         "dominion-solutions/filament-captcha": "^0.1.0",
         "filament/filament": "^3.2",
+        "jeffgreco13/filament-breezy": "^2.4",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "mews/captcha": "^3.4",
-      "ext-curl": "*"
+        "mews/captcha": "^3.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
