@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentResource extends Resource
 {
@@ -74,7 +75,10 @@ class DocumentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->hidden( function () {
+                            return Auth::user()->hasRole('users');
+                        }),
                 ]),
             ]);
     }
@@ -93,5 +97,13 @@ class DocumentResource extends Resource
             'create' => Pages\CreateDocument::route('/create'),
             'edit' => Pages\EditDocument::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+        ->whereHas('user', function ($query) {
+            $query->where('id', auth()->id());
+        });
     }
 }
