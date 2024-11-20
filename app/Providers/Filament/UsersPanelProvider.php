@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\UsersLogin;
+use App\Livewire\UserInfoComponent;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -56,6 +57,9 @@ class UsersPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
                 BreezyCore::make()
+                    ->myProfileComponents([
+                        'personal_info' => UserInfoComponent::class
+                    ])
                     ->myProfile(
                         shouldRegisterUserMenu: true,
                         shouldRegisterNavigation: false,
