@@ -46,7 +46,7 @@ class EditDocument extends EditRecord
         );
 
         Notification::make()
-            ->title('New File Uploaded successfully')
+            ->title('New File update successfully')
             ->body($this->data['description'])
             ->warning()
             ->sendToDatabase($user);

@@ -39,7 +39,7 @@ class CreateFile extends CreateRecord
 
         Notification::make()
             ->title('New File Uploaded successfully')
-            ->body('Test')
+            ->body($this->data['description'])
             ->sendToDatabase($user);
 
         $this->sendWhatsAppNotification($phoneNumber, $message, $senderNumber);
