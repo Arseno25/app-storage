@@ -116,7 +116,7 @@ class ViewFile extends ViewRecord
                 PdfViewerEntry::make('document_pdf')
                     ->label('View the PDF')
                     ->minHeight('60svh')
-                    ->fileUrl(Storage::url($this->record->document_pdf))
+                    ->fileUrl(public_path('/storage/'.$this->record->document_pdf))
                     ->columnSpanFull(),
                         ])
             ]);
