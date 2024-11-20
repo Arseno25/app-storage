@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,8 +58,13 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole(config('filament-shield.super_admin.name')) ||
-            $this->hasRole(config('filament-shield.users.name'));
+        if($panel->getId() === 'admin'){
+            return $this->hasRole(Utils::getSuperAdminName());
+        } elseif ($panel->getId() === 'users') {
+            return $this->hasRole(Utils::getSuperAdminName()) || $this->hasRole(config('filament-shield.users.name'));
+        }else{
+            return false;
+        }
     }
 
     public function file():HasMany
