@@ -75,7 +75,7 @@ class ViewDocument extends ViewRecord
 
                     // Kirim notifikasi sukses
                     Notification::make()
-                        ->title('File ZIP berhasil dibuat: ' . $zipFileName)
+                        ->title('File ZIP berhasil diunduh: ' . $zipFileName)
                         ->success()
                         ->send();
 

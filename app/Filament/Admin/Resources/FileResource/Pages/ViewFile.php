@@ -23,69 +23,7 @@ class ViewFile extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('downloads')
-                ->label('Download File')
-                ->color('success')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->button()
-                ->action(function () {
-                    $paths = [
-                        'pdf' => public_path('storage/' . $this->record->document_pdf),
-                        'word' => public_path('storage/' . $this->record->document_word),
-                    ];
-
-                    // Validasi file
-                    foreach ($paths as $type => $path) {
-                        if (!file_exists($path)) {
-                            return Notification::make()
-                                ->title("File " . strtoupper($type) . " tidak ditemukan")
-                                ->danger()
-                                ->send();
-                        }
-                    }
-
-                    // Nama file ZIP
-                    $zipFileName = sprintf(
-                        '%s_%s_%s.zip',
-                        $this->record->user->name,
-                        $this->record->status,
-                        now()->timestamp
-                    );
-
-                    // Path penyimpanan sementara
-                    $tempDir = public_path('storage/temp');
-                    $zipPath = "{$tempDir}/{$zipFileName}";
-
-                    // Buat folder 'temp' jika belum ada
-                    if (!is_dir($tempDir)) {
-                        mkdir($tempDir, 0755, true);
-                    }
-
-                    // Buat file ZIP
-                    $zip = new ZipArchive();
-                    if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
-                        foreach ($paths as $path) {
-                            $zip->addFile($path, basename($path));
-                        }
-                        $zip->close();
-                    } else {
-                        return Notification::make()
-                            ->title('Gagal membuat file ZIP')
-                            ->danger()
-                            ->send();
-                    }
-
-                    // Kirim notifikasi sukses
-                    Notification::make()
-                        ->title('File ZIP berhasil dibuat: ' . $zipFileName)
-                        ->success()
-                        ->send();
-
-                    // Mengunduh file ZIP dan hapus setelah selesai
-                    return response()->download($zipPath)->deleteFileAfterSend(true);
-                }),
-
-        Actions\EditAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 
