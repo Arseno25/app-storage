@@ -39,7 +39,13 @@ class FileResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->searchable()
                     ->preload()
-                    ->relationship('user', 'name'),
+                    ->relationship('user', 'name', function($query){
+                        if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin')) {
+                            $query->whereHas('roles', function ($q) {
+                                $q->where('name', 'users');
+                            });
+                        }
+                    }),
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
                 Forms\Components\Select::make('status')

@@ -31,7 +31,13 @@ class DocumentResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->searchable()
                     ->preload()
-                    ->relationship('user', 'name'),
+                    ->relationship('user', 'name', function($query){
+                        if (auth()->user()->hasRole('users')) {
+                            $query->whereHas('roles', function ($q) {
+                                $q->where('name', 'super_admin') || $q->where('name', 'admin');
+                            });
+                        }
+                    }),
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
                 Forms\Components\Select::make('status')
