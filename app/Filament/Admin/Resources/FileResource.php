@@ -15,6 +15,20 @@ class FileResource extends Resource
 {
     protected static ?string $model = File::class;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+
+        return $revisiCount > 0 ? (string) $revisiCount : null;
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        // Menghitung jumlah data dengan status "revisi"
+        $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+
+        // Menentukan warna badge berdasarkan kondisi
+        return $revisiCount > 0 ? 'warning' : 'primary';
+    }
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

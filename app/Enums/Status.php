@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum Status: string
 {
-    case Uploaded = 'Uploaded';
-    case Revisi = 'Revisi';
-    case Approve = 'Approve';
+    case Uploaded = 'upload';
+    case Revisi = 'revisi';
+    case Approve = 'approve';
 
     public function label(): string
     {
         return match ($this) {
-            self::Uploaded => 'Uploaded',
-            self::Revisi => 'Revisi',
-            self::Approve => 'Approve'
+            self::Uploaded => 'upload',
+            self::Revisi => 'revisi',
+            self::Approve => 'approve'
         };
     }
 
