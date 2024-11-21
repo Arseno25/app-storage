@@ -1,4 +1,6 @@
+#deployment
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/senodevc/public_html/storage.senodev.com/
-    - /bin/cp -R /home/senodevc/repositories/app-storage/* $DEPLOYPATH
+    - /bin/cp -R /home/senodevc/repositories/app-storage/ $DEPLOYPATH
