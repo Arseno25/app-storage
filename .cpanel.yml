@@ -1,5 +1,3 @@
-#deployment
----
 deployment:
   tasks:
     - export DEPLOYPATH=/home/senodevc/public_html/storage.senodev.com/
