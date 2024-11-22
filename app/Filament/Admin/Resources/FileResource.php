@@ -46,9 +46,7 @@ class FileResource extends Resource
                             $query->whereHas('roles', function ($q) {
                                 $q->where('name', 'users');
                             });
-                        }
-
-                        if (auth()->user()->hasRole('users')) {
+                        }else if(auth()->user()->hasRole('users')) {
                             $query->whereHas('roles', function ($q) {
                                 $q->where('name', 'super_admin') || $q->where('name', 'admin');
                             });
