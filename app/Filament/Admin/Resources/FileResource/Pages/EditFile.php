@@ -3,8 +3,11 @@
 namespace App\Filament\Admin\Resources\FileResource\Pages;
 
 use App\Filament\Admin\Resources\FileResource;
+use App\Models\User;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
 
 class EditFile extends EditRecord
 {
@@ -15,5 +18,17 @@ class EditFile extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        $userId = $this->data['user_id'];
+        $user = User::find($userId);
+
+        Notification::make()
+            ->title('New File update successfully')
+            ->body($this->data['description'])
+            ->warning()
+            ->sendToDatabase($user);
     }
 }
