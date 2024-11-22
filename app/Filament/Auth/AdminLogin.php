@@ -16,7 +16,7 @@ class AdminLogin extends BaseAuth
 
     public function getHeading(): string|Htmlable
     {
-        return __('Admin Login');
+        return __('filament-panels::pages/auth/login.heading');
     }
     /**
      * Get the form for the resource.

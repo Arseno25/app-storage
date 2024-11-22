@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Auth\AdminLogin;
+use App\Filament\Auth\Register;
 use App\Livewire\UserInfoComponent;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -20,6 +21,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(AdminLogin::class)
+            ->registration(Register::class)
             ->colors([
                 'primary' => Color::Indigo,
             ])
@@ -45,7 +48,14 @@ class AdminPanelProvider extends PanelProvider
                         navigationGroup: 'Settings',
                         hasAvatars: false,
                         slug: 'my-profile'
-                    )
+                    ),
+                FilamentGeneralSettingsPlugin::make()
+                    ->canAccess(fn() => auth()->user()->hasRole('super_admin'))
+                    ->setSort(99)
+                    ->setIcon('heroicon-o-cog')
+                    ->setNavigationGroup('Settings')
+                    ->setTitle('General Settings')
+                    ->setNavigationLabel('General Settings'),
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')

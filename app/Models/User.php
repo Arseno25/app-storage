@@ -55,10 +55,10 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted(): void
     {
         static::creating(function (User $user) {
-            if ($user->name === 'Admin') {
+            if ($user->name === 'Admin' || $user->name === 'Super Admin') {
                 return;
             }
-
+            
             $user->assignRole('users');
         });
     }
@@ -69,9 +69,7 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         if($panel->getId() === 'admin'){
-            return $this->hasRole(Utils::getSuperAdminName());
-        } elseif ($panel->getId() === 'users') {
-            return $this->hasRole(Utils::getSuperAdminName()) || $this->hasRole(config('filament-shield.users.name'));
+            return $this->hasRole(Utils::getSuperAdminName()) || $this->hasRole('users');
         }else{
             return false;
         }

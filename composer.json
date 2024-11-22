@@ -12,6 +12,7 @@
         "dominion-solutions/filament-captcha": "^0.1.0",
         "filament/filament": "^3.2",
         "jeffgreco13/filament-breezy": "^2.4",
+        "joaopaulolndev/filament-general-settings": "^1.0",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",

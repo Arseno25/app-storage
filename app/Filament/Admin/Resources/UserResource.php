@@ -3,17 +3,23 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\File;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static ?string $navigationGroup = 'User Management';
+
+    protected static ?int $navigationSort = -2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -34,6 +40,9 @@ class UserResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('roles.name')
                     ->label('Role')
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
                     ->relationship('roles', 'name'),
                 Forms\Components\TextInput::make('password')
                     ->label('Password')

@@ -15,6 +15,10 @@ class FileResource extends Resource
 {
     protected static ?string $model = File::class;
 
+    protected static ?string $navigationGroup = 'File Management';
+
+    protected static ?int $navigationSort = -4;
+
     public static function getNavigationBadge(): ?string
     {
         $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
@@ -23,10 +27,8 @@ class FileResource extends Resource
     }
     public static function getNavigationBadgeColor(): ?string
     {
-        // Menghitung jumlah data dengan status "revisi"
         $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
 
-        // Menentukan warna badge berdasarkan kondisi
         return $revisiCount > 0 ? 'warning' : 'primary';
     }
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -49,11 +51,20 @@ class FileResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        Status::Uploaded->value => Status::Uploaded->label(),
-                        Status::Revisi->value => Status::Revisi->label(),
-                        Status::Approve->value => Status::Approve->label(),
-                    ]),
+                    ->options(function () {
+                        if(auth()->user()->hasRole('users')) {
+                            return [
+                                Status::Revisi->value => Status::Revisi->label(),
+                                Status::Approve->value => Status::Approve->label(),
+                            ];
+                        }
+                        return [
+                            Status::Uploaded->value => Status::Uploaded->label(),
+                            Status::Revisi->value => Status::Revisi->label(),
+                            Status::Approve->value => Status::Approve->label(),
+                        ];
+
+                    }),
                 Forms\Components\FileUpload::make('document_word')
                     ->label('File Word')
                     ->preserveFilenames()
