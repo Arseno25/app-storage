@@ -12,19 +12,6 @@ return [
     'expiration_cache_config_time' => 60,
     'show_custom_tabs'=> true,
     'custom_tabs' => [
-        'more_configs' => [
-            'label' => 'More Configs',
-            'icon' => 'heroicon-o-plus-circle',
-            'columns' => 1,
-            'fields' => [
-                'custom_field_1' => [
-                    'type' => TypeFieldEnum::Text->value,
-                    'label' => 'Custom Textfield 1',
-                    'placeholder' => 'Custom Field 1',
-                    'required' => true,
-                    'rules' => 'required|string|max:255',
-                ],
-                ]
-            ]
-        ]
+        //
+        ],
 ];
