@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Color\Color;
 
 class UserResource extends Resource
 {
@@ -69,7 +70,13 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('phone_number'),
-                Tables\Columns\TextColumn::make('roles.name'),
+                Tables\Columns\TextColumn::make('roles.name')
+                ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'users' => 'warning',
+                        'super_admin' => 'danger',
+                        default => 'success',
+                    })
             ])
             ->filters([
                 //
