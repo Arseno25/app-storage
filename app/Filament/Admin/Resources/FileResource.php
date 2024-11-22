@@ -39,22 +39,26 @@ class FileResource extends Resource
             ->columns(1)
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->searchable()
+                    ->required()
                     ->preload()
-                    ->relationship('user', 'name', function($query){
+                    ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin atau Super Admin' : null)
+                    ->relationship('user', 'name', function ($query) {
                         if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin')) {
                             $query->whereHas('roles', function ($q) {
                                 $q->where('name', 'users');
                             });
-                        }else if(auth()->user()->hasRole('users')) {
+                        } elseif (auth()->user()->hasRole('users')) {
                             $query->whereHas('roles', function ($q) {
-                                $q->where('name', 'super_admin') || $q->where('name', 'admin');
+                                $q->whereIn('name', ['super_admin', 'admin']);
                             });
                         }
                     }),
                 Forms\Components\Textarea::make('description')
+                    ->required()
                     ->label('Description'),
                 Forms\Components\Select::make('status')
+                    ->required()
+                    ->preload()
                     ->options(function () {
                         if(auth()->user()->hasRole('users')) {
                             return [
@@ -70,11 +74,13 @@ class FileResource extends Resource
 
                     }),
                 Forms\Components\FileUpload::make('document_word')
+                    ->required()
                     ->label('File Word')
                     ->preserveFilenames()
                     ->acceptedFileTypes(['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']),
                 Forms\Components\FileUpload::make('document_pdf')
                     ->label('File PDF')
+                    ->required()
                     ->preserveFilenames()
                     ->acceptedFileTypes(['application/pdf']),
             ]);

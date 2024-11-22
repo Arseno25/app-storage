@@ -82,7 +82,8 @@ class ViewFile extends ViewRecord
 
                     return response()->download($zipPath)->deleteFileAfterSend(true);
                 }),
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+            ->label(auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit'),
         ];
     }
 
