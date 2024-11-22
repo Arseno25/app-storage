@@ -47,6 +47,12 @@ class FileResource extends Resource
                                 $q->where('name', 'users');
                             });
                         }
+
+                        if (auth()->user()->hasRole('users')) {
+                            $query->whereHas('roles', function ($q) {
+                                $q->where('name', 'super_admin') || $q->where('name', 'admin');
+                            });
+                        }
                     }),
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
