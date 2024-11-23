@@ -93,6 +93,9 @@ class FileResource extends Resource
                             });
                         }
                     }),
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->required(),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->label('Description'),
@@ -131,6 +134,7 @@ class FileResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('document_word'),
                 Tables\Columns\TextColumn::make('document_pdf'),

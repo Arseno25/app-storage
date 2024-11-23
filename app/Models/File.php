@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class File extends Model
 {
-   protected $fillable = ['document_word','document_pdf', 'user_id', 'description', 'status'];
+   protected $fillable = ['title', 'document_word','document_pdf', 'user_id', 'description', 'status'];
 
    public function user():BelongsTo
    {

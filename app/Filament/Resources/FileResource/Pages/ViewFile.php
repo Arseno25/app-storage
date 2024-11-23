@@ -104,8 +104,10 @@ class ViewFile extends ViewRecord
             ->schema([
                 Section::make()
                     ->description('User Information')
+                    ->columns(2)
                     ->schema([
                     TextEntry::make('user.name'),
+                    TextEntry::make('title'),
                     TextEntry::make('description'),
                     TextEntry::make('status')
                         ->badge()
