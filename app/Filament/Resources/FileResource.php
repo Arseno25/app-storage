@@ -48,12 +48,10 @@ class FileResource extends Resource
         $user = auth()->user();
 
         if ($user->hasRole('super_admin')) {
-            // Super Admin: Badge warna 'warning' jika ada status 'Revisi'
             $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
 
             return $revisiCount > 0 ? 'warning' : null;
         } else {
-            // User biasa: Filter berdasarkan user_id
             $pendingCount = static::getModel()::where('status', Status::Pending)
                 ->where('user_id', $user->id)
                 ->count();
@@ -63,9 +61,9 @@ class FileResource extends Resource
                 ->count();
 
             if ($pendingCount > 0) {
-                return 'primary'; // Warna biru untuk pending
+                return 'primary';
             } elseif ($revisedCount > 0) {
-                return 'warning'; // Warna orange untuk revised
+                return 'warning';
             }
         }
 

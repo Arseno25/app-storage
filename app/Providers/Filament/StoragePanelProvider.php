@@ -29,6 +29,7 @@ class StoragePanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandName('Storage Room')
             ->id('storageApp')
             ->path('storageApp')
             ->login(AdminLogin::class)
