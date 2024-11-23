@@ -85,12 +85,12 @@ class ViewFile extends ViewRecord
                     return response()->download($zipPath)->deleteFileAfterSend(true);
                 }),
             Actions\EditAction::make()
-                ->disabled(fn() => $this->record->status === Status::Approved->value || Status::Completed->value)
+                ->disabled(fn() => $this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value)
             ->label(auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit'),
             Action::make('approve')
                 ->color(Color::Fuchsia)
             ->label('Approve')
-                ->disabled(fn() => $this->record->status === Status::Approved->value || Status::Completed->value)
+                ->disabled(fn() => $this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value)
             ->action(fn (File $file) => $file->update([
                 'status' => Status::Approved->value
             ]))
