@@ -22,15 +22,54 @@ class FileResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+        $user = auth()->user();
 
-        return $revisiCount > 0 ? (string) $revisiCount : null;
+        if ($user->hasRole('super_admin')) {
+            // Super Admin: Hitung semua file dengan status 'Revisi'
+            $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+
+            return $revisiCount > 0 ? (string) $revisiCount : null;
+        } else {
+            // User biasa: Hitung file dengan status 'Pending' atau 'Revised' yang terkait dengan user ini
+            $pendingCount = static::getModel()::where('status', Status::Pending)
+                ->where('user_id', $user->id) // Filter berdasarkan user_id
+                ->count();
+
+            $revisedCount = static::getModel()::where('status', Status::Revised)
+                ->where('user_id', $user->id) // Filter berdasarkan user_id
+                ->count();
+
+            return $pendingCount > 0 || $revisedCount > 0 ? (string) ($pendingCount + $revisedCount) : null;
+        }
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
-        $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+        $user = auth()->user();
 
-        return $revisiCount > 0 ? 'warning' : 'primary';
+        if ($user->hasRole('super_admin')) {
+            // Super Admin: Badge warna 'warning' jika ada status 'Revisi'
+            $revisiCount = static::getModel()::where('status', Status::Revisi)->count();
+
+            return $revisiCount > 0 ? 'warning' : null;
+        } else {
+            // User biasa: Filter berdasarkan user_id
+            $pendingCount = static::getModel()::where('status', Status::Pending)
+                ->where('user_id', $user->id)
+                ->count();
+
+            $revisedCount = static::getModel()::where('status', Status::Revised)
+                ->where('user_id', $user->id)
+                ->count();
+
+            if ($pendingCount > 0) {
+                return 'primary'; // Warna biru untuk pending
+            } elseif ($revisedCount > 0) {
+                return 'warning'; // Warna orange untuk revised
+            }
+        }
+
+        return null;
     }
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -137,9 +176,13 @@ class FileResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()
-            ->whereHas('user', function ($query) {
-                $query->where('id', auth()->id());
-            });
+        return parent::getEloquentQuery()->when(
+            !auth()->user()->hasRole('super_admin'),
+            function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->where('id', auth()->id());
+                });
+            }
+        );
     }
 }

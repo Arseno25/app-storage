@@ -7,7 +7,7 @@ use App\Models\File;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class StatsOverview extends BaseWidget
+class UserStatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
@@ -28,16 +28,8 @@ class StatsOverview extends BaseWidget
 
         return [
             Stat::make('Pending', $counts[(string)Status::Pending->value] ?? 0),
-            Stat::make('Revisi', $counts[(string)Status::Revisi->value] ?? 0),
             Stat::make('Revised', $counts[(string)Status::Revised->value] ?? 0),
-            Stat::make('Approve', $counts[(string)Status::Approved->value] ?? 0),
             Stat::make('Complete', $counts[(string)Status::Completed->value] ?? 0),
         ];
     }
-
-    public static function canView(): bool
-    {
-        return auth()->user()->hasRole('super_admin');
-    }
-
 }
