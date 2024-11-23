@@ -2,7 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\AdminPanelProvider::class,
-    App\Providers\Filament\UsersPanelProvider::class,
+    App\Providers\Filament\StoragePanelProvider::class,
     Barryvdh\Debugbar\ServiceProvider::class,
 ];

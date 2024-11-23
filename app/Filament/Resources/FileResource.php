@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources;
+namespace App\Filament\Resources;
 
 use App\Enums\Status;
 use App\Filament\Resources\FileResource\RelationManagers;
@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Support\Colors\Color;
 
 class FileResource extends Resource
 {
@@ -63,13 +64,13 @@ class FileResource extends Resource
                         if(auth()->user()->hasRole('users')) {
                             return [
                                 Status::Revisi->value => Status::Revisi->label(),
-                                Status::Approve->value => Status::Approve->label(),
+                                Status::Approved->value => Status::Approved->label(),
+                                Status::Completed->value => Status::Completed->label(),
                             ];
                         }
                         return [
-                            Status::Uploaded->value => Status::Uploaded->label(),
-                            Status::Revisi->value => Status::Revisi->label(),
-                            Status::Approve->value => Status::Approve->label(),
+                            Status::Pending->value => Status::Pending->label(),
+                            Status::Revised->value => Status::Revised->label(),
                         ];
 
                     }),
@@ -97,9 +98,11 @@ class FileResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn ($state) => match ($state) {
-                    Status::Uploaded->value => 'primary',
+                    Status::Pending->value => 'primary',
                     Status::Revisi->value => 'warning',
-                    Status::Approve->value => 'success',
+                    Status::Revised->value => Color::Orange,
+                    Status::Approved->value => Color::Gray,
+                    Status::Completed->value => 'success',
                 }),
             ])
             ->filters([
@@ -125,10 +128,10 @@ class FileResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Admin\Resources\FileResource\Pages\ListFiles::route('/'),
-            'create' => \App\Filament\Admin\Resources\FileResource\Pages\CreateFile::route('/create'),
-            'edit' => \App\Filament\Admin\Resources\FileResource\Pages\EditFile::route('/{record}/edit'),
-            'view' => \App\Filament\Admin\Resources\FileResource\Pages\ViewFile::route('/{record}'),
+            'index' => \App\Filament\Resources\FileResource\Pages\ListFiles::route('/'),
+            'create' => \App\Filament\Resources\FileResource\Pages\CreateFile::route('/create'),
+            'edit' => \App\Filament\Resources\FileResource\Pages\EditFile::route('/{record}/edit'),
+            'view' => \App\Filament\Resources\FileResource\Pages\ViewFile::route('/{record}'),
         ];
     }
 }

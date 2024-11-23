@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources;
+namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\File;
@@ -101,9 +101,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Admin\Resources\UserResource\Pages\ListUsers::route('/'),
-            'create' => \App\Filament\Admin\Resources\UserResource\Pages\CreateUser::route('/create'),
-            'edit' => \App\Filament\Admin\Resources\UserResource\Pages\EditUser::route('/{record}/edit'),
+            'index' => \App\Filament\Resources\UserResource\Pages\ListUsers::route('/'),
+            'create' => \App\Filament\Resources\UserResource\Pages\CreateUser::route('/create'),
+            'edit' => \App\Filament\Resources\UserResource\Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

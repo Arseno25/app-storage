@@ -55,10 +55,18 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted(): void
     {
         static::creating(function (User $user) {
-            if ($user->name === 'Admin' || $user->name === 'Super Admin') {
+            if (app()->runningInConsole()) {
                 return;
             }
-            
+
+            if (in_array($user->name, ['Admin', 'Super Admin'])) {
+                if (User::where('name', $user->name)->whereHas('roles', function ($query) {
+                    $query->where('name', 'super_admin');
+                })->exists()) {
+                    return;
+                }
+            }
+
             $user->assignRole('users');
         });
     }
@@ -68,7 +76,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        if($panel->getId() === 'admin'){
+        if($panel->getId() === 'storageApp'){
             return $this->hasRole(Utils::getSuperAdminName()) || $this->hasRole('users');
         }else{
             return false;

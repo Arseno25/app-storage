@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Widgets;
+namespace App\Filament\Widgets;
 
 use App\Enums\Status;
 use App\Models\File;
@@ -19,9 +19,11 @@ class StatsOverview extends BaseWidget
             ->toArray();
 
         return [
-            Stat::make('Uploaded', $counts[(string)Status::Uploaded->value] ?? 0),
+            Stat::make('Uploaded', $counts[(string)Status::Pending->value] ?? 0),
             Stat::make('Revisi', $counts[(string)Status::Revisi->value] ?? 0),
-            Stat::make('Approve', $counts[(string)Status::Approve->value] ?? 0),
+            Stat::make('Revisi', $counts[(string)Status::Revised->value] ?? 0),
+            Stat::make('Approve', $counts[(string)Status::Approved->value] ?? 0),
+            Stat::make('Reject', $counts[(string)Status::Completed->value] ?? 0),
         ];
     }
 }

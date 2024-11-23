@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Admin\Resources\FileResource\Pages;
+namespace App\Filament\Resources\FileResource\Pages;
 
 use App\Enums\Status;
-use App\Filament\Admin\Resources\FileResource;
+use App\Filament\Resources\FileResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Infolists\Components\Section;
