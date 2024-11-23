@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\QueueCheck;
 use Spatie\Health\Facades\Health;
 use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
@@ -28,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
             OptimizedAppCheck::new(),
             DebugModeCheck::new(),
             EnvironmentCheck::new(),
+            DatabaseCheck::new()
+             ->connectionName('mysql'),
+            QueueCheck::new()->onQueue(['notifications']),
         ]);
     }
 }
