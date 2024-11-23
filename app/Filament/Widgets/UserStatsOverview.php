@@ -32,4 +32,9 @@ class UserStatsOverview extends BaseWidget
             Stat::make('Complete', $counts[(string)Status::Completed->value] ?? 0),
         ];
     }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->hasRole('users');
+    }
 }
