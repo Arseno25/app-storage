@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Auth\AdminLogin;
 use App\Filament\Auth\Register;
+use App\Filament\Pages\Health;
 use App\Livewire\UserInfoComponent;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
@@ -75,7 +76,8 @@ class StoragePanelProvider extends PanelProvider
                     )
                     ->sort(-1)
                     ->columnSpan('1xl'),
-                FilamentSpatieLaravelHealthPlugin::make(),
+                FilamentSpatieLaravelHealthPlugin::make()
+                ->usingPage(Health::class),
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

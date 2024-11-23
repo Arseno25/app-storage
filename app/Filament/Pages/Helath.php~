@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Filament\Pages;
+
+use Filament\Pages\Page;
+
+use ShuvroRoy\FilamentSpatieLaravelHealth\Pages\HealthCheckResults as BaseHealthCheckResults;
+
+class Helath extends BaseHealthCheckResults
+{
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        return 'Health Check';
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'App Health';
+    }
+}
