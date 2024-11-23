@@ -49,7 +49,7 @@ class ViewFile extends ViewRecord
                     // Nama file ZIP
                     $zipFileName = sprintf(
                         '%s_%s_%s.zip',
-                        $this->record->user->name,
+                        $this->record->title,
                         $this->record->status,
                         now()->timestamp
                     );
