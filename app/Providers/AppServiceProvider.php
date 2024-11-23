@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\CacheCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use Spatie\Health\Checks\Checks\QueueCheck;
+use Spatie\Health\Checks\Checks\ScheduleCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
 use Spatie\Health\Checks\Checks\OptimizedAppCheck;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
             DebugModeCheck::new(),
             EnvironmentCheck::new(),
             QueueCheck::new()->onQueue(['notifications']),
+            ScheduleCheck::new(),
             CacheCheck::new()->driver('database'),
         ]);
     }

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
+use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,5 +20,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })->withSchedule(function (Schedule $schedule){
         $schedule->command(DispatchQueueCheckJobsCommand::class)->everyMinute();
+        $schedule->command(ScheduleCheckHeartbeatCommand::class)->everyMinute();
     })
     ->create();
