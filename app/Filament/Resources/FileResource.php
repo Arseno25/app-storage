@@ -134,4 +134,12 @@ class FileResource extends Resource
             'view' => \App\Filament\Resources\FileResource\Pages\ViewFile::route('/{record}'),
         ];
     }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('user', function ($query) {
+                $query->where('id', auth()->id());
+            });
+    }
 }

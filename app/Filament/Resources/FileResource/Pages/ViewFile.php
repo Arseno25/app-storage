@@ -11,6 +11,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Storage;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use ZipArchive;
@@ -101,9 +102,11 @@ class ViewFile extends ViewRecord
                         ->badge()
                         ->color(function () {
                             return match ($this->record->status) {
-                                Status::Uploaded->value => 'primary',
+                                Status::Pending->value => 'primary',
                                 Status::Revisi->value => 'warning',
-                                Status::Approve->value => 'success',
+                                Status::Revised->value => Color::Orange,
+                                Status::Approved->value => Color::Gray,
+                                Status::Completed->value => 'success',
                             };
                         }),
                     ]),
