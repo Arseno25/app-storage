@@ -66,7 +66,7 @@ class StoragePanelProvider extends PanelProvider
                     ->message(text: fn() => auth()->user()->hasRole('super_admin') ? __('Welcome ') : __('Welcome'))
                     ->name(text: fn() => auth()->user()?->name)
                     ->title(fn () => getRandomQuote())
-                    ->avatar(size: 'w-12 h-12')
+                    ->avatar(size: 'w-16 h-16')
                     ->timeSensitive(morningStart: 6, afternoonStart: 12, eveningStart: 17, nightStart: 22)
                     ->action(
                         Action::make('action')
