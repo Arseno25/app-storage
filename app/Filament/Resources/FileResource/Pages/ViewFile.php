@@ -27,7 +27,7 @@ class ViewFile extends ViewRecord
         return [
             Actions\Action::make('downloads')
                 ->label('Download File')
-                ->color('success')
+                ->color(Color::Violet)
                 ->icon('heroicon-o-arrow-down-tray')
                 ->button()
                 ->action(function () {
@@ -84,16 +84,34 @@ class ViewFile extends ViewRecord
 
                     return response()->download($zipPath)->deleteFileAfterSend(true);
                 }),
-            Actions\EditAction::make()
-                ->disabled(fn() => $this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value)
-            ->label(auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit'),
-            Action::make('approve')
-                ->color(Color::Fuchsia)
-            ->label('Approve')
-                ->disabled(fn() => $this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value)
-            ->action(fn (File $file) => $file->update([
-                'status' => Status::Approved->value
-            ]))
+            Actions\ActionGroup::make([
+                Actions\EditAction::make()
+                    ->disabled(function () {
+                        return auth()->user()->hasRole('users') &&
+                            ($this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value);
+                    })
+                    ->label(function () {
+                        return auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit';
+                    }),
+                Action::make('approve')
+                    ->color(Color::Fuchsia)
+                    ->label('Approve')
+                    ->icon('heroicon-o-star')
+                    ->hidden(fn() => auth()->user()->hasRole('super_admin'))
+                    ->disabled(fn() => $this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value)
+                    ->action(fn (File $file) => $file->update([
+                        'status' => Status::Approved->value
+                    ])),
+                Action::make('Complited')
+                    ->icon('heroicon-o-check-badge')
+                    ->color('success')
+                    ->label('Complited')
+                    ->hidden(fn() => auth()->user()->hasRole('users'))
+                    ->disabled(fn() => $this->record->status === Status::Completed->value)
+                    ->action(fn (File $file) => $file->update([
+                        'status' => Status::Completed->value
+                    ]))
+            ]),
         ];
     }
 
