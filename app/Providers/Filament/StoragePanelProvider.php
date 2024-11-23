@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Auth\AdminLogin;
 use App\Filament\Auth\Register;
 use App\Livewire\UserInfoComponent;
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -19,9 +20,11 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
+use Orion\FilamentGreeter\GreeterPlugin;
 
 class StoragePanelProvider extends PanelProvider
 {
@@ -57,6 +60,20 @@ class StoragePanelProvider extends PanelProvider
                     ->setNavigationGroup('Settings')
                     ->setTitle('General Settings')
                     ->setNavigationLabel('General Settings'),
+                GreeterPlugin::make()
+                    ->message(text: fn() => auth()->user()->hasRole('super_admin') ? __('Welcome ') : __('Welcome'))
+                    ->name(text: fn() => auth()->user()?->name)
+                    ->title(fn () => getRandomQuote())
+                    ->avatar(size: 'w-12 h-12')
+                    ->timeSensitive(morningStart: 6, afternoonStart: 12, eveningStart: 17, nightStart: 22)
+                    ->action(
+                        Action::make('action')
+                            ->label('Refresh')
+                            ->icon('heroicon-o-arrow-path')
+                            ->color(Color::Slate),
+                    )
+                    ->sort(-1)
+                    ->columnSpan('1xl'),
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -66,7 +83,7 @@ class StoragePanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+//                Widgets\AccountWidget::class,
 //                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([

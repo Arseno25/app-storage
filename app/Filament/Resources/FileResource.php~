@@ -79,7 +79,7 @@ class FileResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->preload()
-                    ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin atau Super Admin' : 'Select User')
+                    ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin atau Super Admin' : null)
                     ->relationship('user', 'name', function ($query) {
                         if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin')) {
                             $query->whereHas('roles', function ($q) {
