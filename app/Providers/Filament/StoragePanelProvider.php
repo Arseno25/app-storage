@@ -25,6 +25,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 use Orion\FilamentGreeter\GreeterPlugin;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class StoragePanelProvider extends PanelProvider
 {
@@ -74,6 +75,7 @@ class StoragePanelProvider extends PanelProvider
                     )
                     ->sort(-1)
                     ->columnSpan('1xl'),
+                FilamentSpatieLaravelHealthPlugin::make(),
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

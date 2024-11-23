@@ -20,6 +20,8 @@ class FileResource extends Resource
 
     protected static ?int $navigationSort = -4;
 
+    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+
     public static function getNavigationBadge(): ?string
     {
         $user = auth()->user();
@@ -69,7 +71,6 @@ class FileResource extends Resource
 
         return null;
     }
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {

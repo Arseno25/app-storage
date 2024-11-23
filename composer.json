@@ -17,7 +17,8 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "mews/captcha": "^3.4",
-        "oriondevelops/filament-greeter": "^0.2.0"
+        "oriondevelops/filament-greeter": "^0.2.0",
+        "shuvroroy/filament-spatie-laravel-health": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
