@@ -16,7 +16,8 @@
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "mews/captcha": "^3.4"
+        "mews/captcha": "^3.4",
+        "oriondevelops/filament-greeter": "^0.2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
