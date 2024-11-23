@@ -15,7 +15,7 @@ if ($queueStatus === 0) {
     print_r($queueOutput);
 }
 
-exec("php $artisanPath schedule:work", $scheduleOutput, $scheduleStatus);
+exec("php $artisanPath schedule:run", $scheduleOutput, $scheduleStatus);
 
 if ($scheduleStatus === 0) {
     echo "Command 'php artisan schedule:work' berhasil dijalankan di background.\n";
