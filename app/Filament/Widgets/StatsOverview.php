@@ -19,11 +19,11 @@ class StatsOverview extends BaseWidget
             ->toArray();
 
         return [
-            Stat::make('Uploaded', $counts[(string)Status::Pending->value] ?? 0),
+            Stat::make('Pending', $counts[(string)Status::Pending->value] ?? 0),
             Stat::make('Revisi', $counts[(string)Status::Revisi->value] ?? 0),
-            Stat::make('Revisi', $counts[(string)Status::Revised->value] ?? 0),
+            Stat::make('Revised', $counts[(string)Status::Revised->value] ?? 0),
             Stat::make('Approve', $counts[(string)Status::Approved->value] ?? 0),
-            Stat::make('Reject', $counts[(string)Status::Completed->value] ?? 0),
+            Stat::make('Complete', $counts[(string)Status::Completed->value] ?? 0),
         ];
     }
 }
