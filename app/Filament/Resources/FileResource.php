@@ -140,7 +140,7 @@ class FileResource extends Resource
                     Status::Pending->value => 'primary',
                     Status::Revisi->value => 'warning',
                     Status::Revised->value => Color::Orange,
-                    Status::Approved->value => Color::Gray,
+                    Status::Approved->value => Color::Fuchsia,
                     Status::Completed->value => 'success',
                 }),
             ])

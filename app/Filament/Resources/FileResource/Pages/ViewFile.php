@@ -4,6 +4,7 @@ namespace App\Filament\Resources\FileResource\Pages;
 
 use App\Enums\Status;
 use App\Filament\Resources\FileResource;
+use App\Models\File;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Infolists\Components\Section;
@@ -84,7 +85,15 @@ class ViewFile extends ViewRecord
                     return response()->download($zipPath)->deleteFileAfterSend(true);
                 }),
             Actions\EditAction::make()
+                ->disabled(fn() => $this->record->status === Status::Approved->value)
             ->label(auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit'),
+            Action::make('approve')
+                ->color(Color::Fuchsia)
+            ->label('Approve')
+                ->disabled(fn() => $this->record->status === Status::Approved->value)
+            ->action(fn (File $file) => $file->update([
+                'status' => Status::Approved->value
+            ]))
         ];
     }
 
@@ -105,7 +114,7 @@ class ViewFile extends ViewRecord
                                 Status::Pending->value => 'primary',
                                 Status::Revisi->value => 'warning',
                                 Status::Revised->value => Color::Orange,
-                                Status::Approved->value => Color::Gray,
+                                Status::Approved->value => Color::Fuchsia,
                                 Status::Completed->value => 'success',
                             };
                         }),
