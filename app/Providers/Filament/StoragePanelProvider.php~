@@ -39,7 +39,7 @@ class StoragePanelProvider extends PanelProvider
             ->path('storageApp')
             ->login(AdminLogin::class)
             ->registration(Register::class)
-            ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth()
             ->colors([
                 'primary' => Color::Indigo,
             ])

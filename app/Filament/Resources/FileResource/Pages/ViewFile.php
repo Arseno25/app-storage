@@ -88,8 +88,7 @@ class ViewFile extends ViewRecord
             Actions\ActionGroup::make([
                 Actions\EditAction::make()
                     ->disabled(function () {
-                        return auth()->user()->hasRole('users') &&
-                            ($this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value);
+                        return  ($this->record->status === Status::Approved->value || $this->record->status === Status::Completed->value);
                     })
                     ->label(function () {
                         return auth()->user()->hasRole('users') ? 'Need Revisi' : 'Edit';
@@ -142,6 +141,7 @@ class ViewFile extends ViewRecord
                         }),
                         TextEntry::make('completed_at')
                             ->label('File will be deleted after status completion')
+                            ->columnSpanFull()
                             ->color(Color::Red)
                             ->formatStateUsing(function ($state) {
                                 $deletionDate = Carbon::parse($state)->addDays(6)->endOfDay();

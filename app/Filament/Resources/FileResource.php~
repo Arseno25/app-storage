@@ -138,8 +138,7 @@ class FileResource extends Resource
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('document_word')
                 ->limit(30),
-                Tables\Columns\TextColumn::make('document_pdf')
-                    ->limit(30),
+                Tables\Columns\TextColumn::make('document_pdf'),
                 Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn ($state) => match ($state) {
