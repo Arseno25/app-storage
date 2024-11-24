@@ -142,7 +142,6 @@ class ViewFile extends ViewRecord
                         }),
                         TextEntry::make('completed_at')
                             ->label('File will be deleted after status completion')
-                            ->color(Color::Red)
                             ->formatStateUsing(function ($state) {
                                 $deletionDate = Carbon::parse($state)->addDays(6)->endOfDay();
                                 $now = Carbon::now();

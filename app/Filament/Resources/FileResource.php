@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\Status;
 use App\Filament\Resources\FileResource\RelationManagers;
 use App\Models\File;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -146,6 +147,19 @@ class FileResource extends Resource
                     Status::Approved->value => Color::Fuchsia,
                     Status::Completed->value => 'success',
                 }),
+                Tables\Columns\TextColumn::make('completed_at')
+                    ->label('File will be deleted after completion')
+                    ->tooltip(' Download your file now before 6 days')
+                    ->color(Color::Red)
+                    ->formatStateUsing(function ($state) {
+                        $deletionDate = Carbon::parse($state)->addDays(6)->endOfDay();
+                        $now = Carbon::now();
+                        if ($now->greaterThanOrEqualTo($deletionDate)) {
+                            return 'Your file has been deleted';
+                        }
+                        $deletionDateFormatted = $deletionDate->format('l, d-m-Y \a\t h:i A');
+                        return "{$deletionDateFormatted} (" . $deletionDate->diffForHumans($now, true) . " left)";
+                    }),
             ])
             ->filters([
                 //
