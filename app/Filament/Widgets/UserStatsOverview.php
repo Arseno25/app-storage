@@ -9,6 +9,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class UserStatsOverview extends BaseWidget
 {
+
+    protected $__name = 'User Stats';
     protected function getStats(): array
     {
         $user = auth()->user();

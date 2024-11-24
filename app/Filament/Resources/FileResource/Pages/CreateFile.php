@@ -4,8 +4,10 @@ namespace App\Filament\Resources\FileResource\Pages;
 
 use App\Filament\Resources\FileResource;
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use http\Env;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use JetBrains\PhpStorm\NoReturn;
@@ -39,7 +41,7 @@ class CreateFile extends CreateRecord
 
         Notification::make()
             ->title('New File Uploaded successfully')
-            ->body($this->data['description'])
+            ->body( 'You have one document to review with status ' . $this->data['status'] . ': ' .$this->data['title'].' - '.$this->data['description'])
             ->sendToDatabase($user);
 
         $this->sendWhatsAppNotification($phoneNumber, $message, $senderNumber);

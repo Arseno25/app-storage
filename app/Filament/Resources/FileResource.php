@@ -19,6 +19,8 @@ class FileResource extends Resource
 
     protected static ?string $navigationGroup = 'File Management';
 
+    protected static ?string $navigationLabel = 'Documents';
+
     protected static ?int $navigationSort = -4;
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
@@ -81,7 +83,7 @@ class FileResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->preload()
-                    ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin atau Super Admin' : 'Select User')
+                    ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin' : 'Select User')
                     ->relationship('user', 'name', function ($query) {
                         if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin')) {
                             $query->whereHas('roles', function ($q) {
@@ -102,12 +104,11 @@ class FileResource extends Resource
                 Forms\Components\Select::make('status')
                     ->required()
                     ->preload()
+                    ->default(fn() => auth()->user()->hasRole('users') ? Status::Revisi->value :   Status::Pending->value)
                     ->options(function () {
                         if(auth()->user()->hasRole('users')) {
                             return [
                                 Status::Revisi->value => Status::Revisi->label(),
-                                Status::Approved->value => Status::Approved->label(),
-                                Status::Completed->value => Status::Completed->label(),
                             ];
                         }
                         return [

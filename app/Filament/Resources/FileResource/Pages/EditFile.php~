@@ -27,7 +27,7 @@ class EditFile extends EditRecord
 
         Notification::make()
             ->title('New File update successfully')
-            ->body('You have one document to check with status ' . $this->data['status'] . ': '.$this->data['title'].' - '.$this->data['description'])
+            ->body('You have one file to check with status ' . $this->data['status'] . ': '.$this->data['title'].' - '.$this->data['description'])
             ->warning()
             ->sendToDatabase($user);
     }
