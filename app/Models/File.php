@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
-   protected $fillable = ['title', 'document_word','document_pdf', 'user_id', 'description', 'status', 'completed_at'];
+   protected $fillable = ['title', 'document_word','document_pdf', 'user_id', 'description', 'status', 'completed_at', 'admin_id'];
 
    protected $casts = [
        'completed_at' => 'datetime',

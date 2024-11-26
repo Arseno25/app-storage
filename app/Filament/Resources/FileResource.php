@@ -95,7 +95,7 @@ class FileResource extends Resource
                     ->required()
                     ->preload()
                     ->disabled(!auth()->user()->hasRole(['super_admin', 'admin', 'Super Admin', 'Admin']))
-                    ->default(auth()->user()->hasRole('super_admin') ? auth()->id() : null)
+                    ->default(auth()->user()->hasRole('super_admin') ? auth()->id() :  auth()->user()->file()->first()->admin_id)
                     ->placeholder('Select Sender')
                     ->relationship('userAdmin', 'name', function ($query) {
                           $query->whereHas('roles', function ($q) {
@@ -146,9 +146,9 @@ class FileResource extends Resource
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('document_word')
-                ->limit(30),
+                ->limit(20),
                 Tables\Columns\TextColumn::make('document_pdf')
-                    ->limit(30),
+                    ->limit(20),
                 Tables\Columns\TextColumn::make('status')
                 ->badge()
                 ->color(fn ($state) => match ($state) {
@@ -160,7 +160,7 @@ class FileResource extends Resource
                 }),
                 Tables\Columns\TextColumn::make('completed_at')
                     ->label('File will be deleted after completion')
-                    ->tooltip(' Download your file now before 6 days')
+                    ->description('Download your file now before 6 days')
                     ->color(Color::Red)
                     ->formatStateUsing(function ($state) {
                         $deletionDate = Carbon::parse($state)->addDays(6)->endOfDay();
@@ -177,6 +177,16 @@ class FileResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('approve')
+                        ->color(Color::Fuchsia)
+                        ->label('Approve')
+                        ->icon('heroicon-o-star')
+                        ->disabled(fn($record) => $record->status === Status::Approved->value || $record->status === Status::Completed->value)
+                        ->action(fn (File $file) => $file->update([
+                            'status' => Status::Approved->value
+                        ]))
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
