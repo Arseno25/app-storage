@@ -83,17 +83,23 @@ class FileResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->preload()
+                    ->disabled(auth()->user()->hasRole('users'))
                     ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin' : 'Select User')
                     ->relationship('user', 'name', function ($query) {
-                        if (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('admin')) {
                             $query->whereHas('roles', function ($q) {
                                 $q->where('name', 'users');
                             });
-                        } elseif (auth()->user()->hasRole('users')) {
-                            $query->whereHas('roles', function ($q) {
-                                $q->whereIn('name', ['super_admin', 'admin']);
+                    }),
+                Forms\Components\Select::make('admin_id')
+                    ->label('Sender')
+                    ->required()
+                    ->preload()
+                    ->disabled(auth()->user()->hasRole('users'))
+                    ->placeholder('Select Sender')
+                    ->relationship('userAdmin', 'name', function ($query) {
+                          $query->whereHas('roles', function ($q) {
+                                $q->whereIn('name', ['super_admin', 'admin', 'Super Admin', 'Admin']);
                             });
-                        }
                     }),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')

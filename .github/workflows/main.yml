@@ -1,0 +1,39 @@
+name: Laravel 
+
+on:
+  push:
+    branches:
+      - Main
+      - dev
+  pull_request:
+    branches:
+      - Main
+      - dev
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, curl, zip
+
+
+      - name: Install Dependencies
+        run: |
+          composer install --no-progress --prefer-dist
+
+      - name: Run Migrations
+        run: |
+          php artisan migrate --force
+
+      - name: Clear Cache
+        run: |
+          php artisan optimize:clear
+

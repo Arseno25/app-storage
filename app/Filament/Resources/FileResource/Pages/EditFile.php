@@ -22,7 +22,7 @@ class EditFile extends EditRecord
 
     protected function afterSave(): void
     {
-        $userId = $this->data['user_id'];
+        $userId = $this->data['admin_id'];
         $user = User::find($userId);
 
         Notification::make()

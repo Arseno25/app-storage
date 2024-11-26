@@ -15,8 +15,15 @@ class File extends Model
    ];
    public function user():BelongsTo
    {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class, 'user_id');
    }
+
+    public function userAdmin():BelongsTo
+    {
+        return $this->belongsTo(User::class, 'admin_id');
+    }
+
+
 
     public function deletePhysicalFiles(): void
     {

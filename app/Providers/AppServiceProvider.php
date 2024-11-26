@@ -43,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
             CacheCheck::new()->driver('database'),
         ]);
 
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::BODY_END,
-            fn (): View => view('footer'),
-        );
+//        FilamentView::registerRenderHook(
+//            PanelsRenderHook::FOOTER,
+//            fn (): View => view('footer'),
+//        );
     }
 }
