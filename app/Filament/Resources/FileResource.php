@@ -140,6 +140,7 @@ class FileResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultGroup('status', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('title'),
@@ -167,7 +168,7 @@ class FileResource extends Resource
                         if ($now->greaterThanOrEqualTo($deletionDate)) {
                             return 'Your file has been deleted';
                         }
-                        $deletionDateFormatted = $deletionDate->format('l, d-m-Y \a\t h:i A');
+                        $deletionDateFormatted = $deletionDate->format('d-m-Y \a\t h:i A');
                         return "{$deletionDateFormatted} (" . $deletionDate->diffForHumans($now, true) . " left)";
                     }),
             ])->defaultSort('created_at', 'desc')
