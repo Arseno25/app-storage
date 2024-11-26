@@ -83,7 +83,7 @@ class FileResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->preload()
-                    ->disabled(auth()->user()->hasRole('users'))
+                    ->disabled(!auth()->user()->hasRole(['super_admin', 'admin', 'Super Admin', 'Admin']))
                     ->placeholder(auth()->user()->hasRole('users') ? 'Select Admin' : 'Select User')
                     ->relationship('user', 'name', function ($query) {
                             $query->whereHas('roles', function ($q) {
@@ -94,7 +94,8 @@ class FileResource extends Resource
                     ->label('Sender')
                     ->required()
                     ->preload()
-                    ->disabled(auth()->user()->hasRole('users'))
+                    ->disabled(!auth()->user()->hasRole(['super_admin', 'admin', 'Super Admin', 'Admin']))
+                    ->default(auth()->user()->hasRole('super_admin') ? auth()->id() : null)
                     ->placeholder('Select Sender')
                     ->relationship('userAdmin', 'name', function ($query) {
                           $query->whereHas('roles', function ($q) {
