@@ -104,7 +104,7 @@ class FileResource extends Resource
                             });
                     }),
                 Forms\Components\TextInput::make('title')
-                    ->label('Title')
+                    ->label('Document Title')
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->required()
@@ -143,8 +143,10 @@ class FileResource extends Resource
         return $table
             ->defaultGroup('status', 'asc')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name'),
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Receiver'),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Document Title'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('document_word')
                 ->limit(20),

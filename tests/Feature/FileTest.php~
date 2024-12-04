@@ -1,0 +1,29 @@
+<?php
+
+
+use App\Models\File;
+use App\Models\User;
+
+beforeEach(function () {
+    $this->seed();
+});
+
+it('can create file', function (){
+
+    $user = User::factory()->create();
+    $file = File::factory()->create(['user_id' => $user->id]);
+    $this->assertDatabaseCount('files', 1);
+
+    $this->assertDatabaseHas('files', [
+        'title' => $file->title,
+        'description' => $file->description,
+        'document_word' => $file->document_word,
+        'document_pdf' => $file->document_pdf,
+        'status' => $file->status,
+        'user_id' => $user->id,
+        'admin_id' => $user->hasRole('super_admin') ? $user->id : null,
+    ]);
+
+    expect()->toBeTrue();
+
+});
