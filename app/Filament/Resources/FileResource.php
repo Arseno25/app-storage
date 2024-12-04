@@ -81,6 +81,7 @@ class FileResource extends Resource
             ->columns(1)
             ->schema([
                 Forms\Components\Select::make('user_id')
+                    ->label('Receiver')
                     ->required()
                     ->preload()
                     ->disabled(!auth()->user()->hasRole(['super_admin', 'admin', 'Super Admin', 'Admin']))

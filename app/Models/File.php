@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class File extends Model
 {
+
+    use HasFactory, InteractsWithMedia;
    protected $fillable = ['title', 'document_word','document_pdf', 'user_id', 'description', 'status', 'completed_at', 'admin_id'];
 
    protected $casts = [
