@@ -121,6 +121,14 @@ class ProjectResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
+                    ->badge()
+                    ->color( fn( $record ) => match ( $record->status ) {
+                        Status::Pending->value => 'primary',
+                        Status::Revisi->value => 'warning',
+                        Status::Revised->value => 'warning',
+                        Status::Approved->value => 'success',
+                        Status::Completed->value => 'success',
+                    })
                     ->sortable(),
 
             ])
