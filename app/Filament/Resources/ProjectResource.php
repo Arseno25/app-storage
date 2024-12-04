@@ -112,7 +112,7 @@ class ProjectResource extends Resource
                     ->sortable(),
                 ProgressBar::make('project_progress')
                     ->getStateUsing(function ($record) {
-                        $total = $record->total_project;
+                        $total = $record->total_target;
                         $progress = $record->project_progress;
                         return [
                             'total' => $total,
