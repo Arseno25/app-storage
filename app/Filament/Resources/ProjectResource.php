@@ -128,4 +128,15 @@ class ProjectResource extends Resource
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->when(
+            !auth()->user()->hasRole('super_admin'),
+            function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->where('id', auth()->id());
+                });
+            }
+        );
+    }
 }
