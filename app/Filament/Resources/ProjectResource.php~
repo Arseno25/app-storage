@@ -119,9 +119,6 @@ class ProjectResource extends Resource
                             'progress' => $progress,
                         ];
                     }),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->sortable(),
 
             ])
             ->filters([
