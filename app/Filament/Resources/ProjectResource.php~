@@ -37,7 +37,7 @@ class ProjectResource extends Resource
                     ->required()
                     ->preload()
                     ->disabled(!auth()->user()->hasRole(['super_admin', 'admin', 'Super Admin', 'Admin']))
-                    ->placeholder( 'Select User')
+                    ->placeholder(!auth()->user()->hasRole('super_admin') ?? 'Select User')
                     ->relationship('user', 'name', function ($query) {
                         $query->whereHas('roles', function ($q) {
                             $q->where('name', 'users');
