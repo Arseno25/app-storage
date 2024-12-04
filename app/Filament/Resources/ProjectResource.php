@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use IbrahimBougaoua\FilaProgress\Tables\Columns\ProgressBar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -28,6 +29,7 @@ class ProjectResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->label('Project Title')
@@ -68,9 +70,22 @@ class ProjectResource extends Resource
                         Status::Approved->value => Status::Approved->name,
                         Status::Completed->value => Status::Completed->name
                     ]),
+                Forms\Components\TextInput::make('total_target')
+                    ->label('Target Project')
+                    ->numeric()
+                    ->default(100)
+                    ->hidden( auth()->user()->hasRole('users'))
+                    ->disabled( auth()->user()->hasRole('users'))
+                    ->required(),
+                Forms\Components\TextInput::make('project_progress')
+                    ->label('Project Progress')
+                    ->hidden( auth()->user()->hasRole('users'))
+                    ->numeric()
+                    ->required(),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->collection('project_image')
                     ->multiple()
+                    ->columnSpanFull()
                     ->label('Image')
                     ->required(),
             ]);
@@ -95,6 +110,15 @@ class ProjectResource extends Resource
                     ->label('Sender')
                     ->badge()
                     ->sortable(),
+                ProgressBar::make('project_progress')
+                    ->getStateUsing(function ($record) {
+                        $total = $record->total_project;
+                        $progress = $record->project_progress;
+                        return [
+                            'total' => $total,
+                            'progress' => $progress,
+                        ];
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime(),
