@@ -19,11 +19,11 @@ build:
 
             # create configuration
             - touch database.db # create sqllite database
-            - cp .env.example .env # create config from example
+            - cp .env.prod .env # create config from example
 
             # install dependencies
             - composer install --optimize-autoloader --no-dev
-            - php artisan migrate
+            - php artisan migrate --seed --force
             - php artisan storage:link | echo "storage:link alrady exist"
 
             # re-create cache
