@@ -34,4 +34,4 @@ run:
   name: my-laravel-app
   description: storage with laravel filament
   command: php artisan octane:start
-  port: 8000
+  port:
