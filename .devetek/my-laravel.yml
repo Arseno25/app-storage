@@ -23,7 +23,7 @@ build:
 
             # install dependencies
             - composer install --optimize-autoloader --no-dev
-            - php artisan migrate --seed --force
+            - php artisan migrate
             - php artisan storage:link | echo "storage:link alrady exist"
 
             # re-create cache
@@ -32,6 +32,6 @@ build:
 
 run:
   name: my-laravel-app
-  description: storage with laravel filament
+  description: My first laravel example deploy from cloud.terpusat.com
   command: php artisan octane:start
-  port:
+  port: 8000
