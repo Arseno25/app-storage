@@ -18,10 +18,13 @@
         "joaopaulolndev/filament-general-settings": "^1.0",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",
+        "laravel/octane": "^2.6",
         "laravel/tinker": "^2.9",
         "mews/captcha": "^3.4",
         "oriondevelops/filament-greeter": "^0.2.0",
-        "shuvroroy/filament-spatie-laravel-health": "^2.1"
+        "shuvroroy/filament-spatie-laravel-health": "^2.1",
+        "spiral/roadrunner-cli": "^2.6.0",
+        "spiral/roadrunner-http": "^3.3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
