@@ -1,0 +1,37 @@
+# Cloud Devetek Standard Definition v0.0.1-alpha.0 Go Example
+version: v0.0.1-alpha.0
+
+setup:
+  language:
+    name: php
+    version: 8.2
+
+build:
+  target:
+    ## -> Build app non docker (tar.gz)
+    machine: # exec sequentially
+      workdir: .
+      steps:
+        - name: "Build laravel application"
+          cmd:
+            # clear previous cache
+            - php artisan optimize:clear | echo "No cache need to clear"
+
+            # create configuration
+            - touch database.db # create sqllite database
+            - cp .env.example .env # create config from example
+
+            # install dependencies
+            - composer install --optimize-autoloader --no-dev
+            - php artisan migrate
+            - php artisan storage:link | echo "storage:link alrady exist"
+
+            # re-create cache
+            - php artisan key:generate | echo "APP_KEY already exist"
+            - php artisan optimize
+
+run:
+  name: my-laravel-app
+  description: My first laravel example deploy from cloud.terpusat.com
+  command: php artisan octane:start
+  port: 8000
