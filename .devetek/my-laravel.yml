@@ -31,7 +31,7 @@ build:
             - php artisan optimize
 
 run:
-  name: app-storage
-  description: App Storage With Laravel Filament
+  name: my-laravel-app
+  description: storage with laravel filament
   command: php artisan octane:start
   port: 8000
