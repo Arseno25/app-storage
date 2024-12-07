@@ -18,7 +18,7 @@ build:
             - php artisan optimize:clear | echo "No cache need to clear"
 
             # create configuration
-            - touch database.db # create sqllite database
+            - touch /database/database.sqlite # create sqllite database
             - cp .env.example .env # create config from example
 
             # install dependencies
