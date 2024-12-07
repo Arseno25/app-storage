@@ -24,7 +24,9 @@ build:
 
             # install dependencies
             - composer install --ignore-platform-req=ext-intl --no-progress --prefer-dist
-            - php artisan migrate
+            - php artisan migrate --seed
+            - php artisan shield:super-admin --user
+            - php artisan shield:generate --all
             - php artisan storage:link | echo "storage:link alrady exist"
 
             # re-create cache
