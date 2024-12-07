@@ -20,7 +20,7 @@ build:
             # create configuration
               # Create SQLite database file if not exists
             - touch database/database.sqlite
-            - cp .env.example .env # create config from example
+            - cp .env.prod .env # create config from example
 
             # install dependencies
             - composer install --ignore-platform-req=ext-intl --no-progress --prefer-dist
