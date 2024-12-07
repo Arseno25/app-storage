@@ -22,7 +22,7 @@ build:
             - cp .env.example .env # create config from example
 
             # install dependencies
-            - composer install --optimize-autoloader --no-dev
+            - composer install --ignore-platform-req=ext-intl --no-progress --prefer-dist
             - php artisan migrate
             - php artisan storage:link | echo "storage:link alrady exist"
 
