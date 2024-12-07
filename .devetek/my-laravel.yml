@@ -24,7 +24,7 @@ build:
 
             # install dependencies
             - composer install --ignore-platform-req=ext-intl --no-progress --prefer-dist
-            - php artisan migrate --seed
+            - php artisan migrate --seed --force
             - php artisan shield:super-admin --user
             - php artisan shield:generate --all --panel=storageApp
             - php artisan storage:link | echo "storage:link alrady exist"
