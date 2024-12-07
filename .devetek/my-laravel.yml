@@ -26,7 +26,7 @@ build:
             - composer install --ignore-platform-req=ext-intl --no-progress --prefer-dist
             - php artisan migrate --seed
             - php artisan shield:super-admin --user
-            - php artisan shield:generate --all
+            - php artisan shield:generate --all --panel=storageApp
             - php artisan storage:link | echo "storage:link alrady exist"
 
             # re-create cache
@@ -34,7 +34,7 @@ build:
             - php artisan optimize
 
 run:
-  name: my-laravel-app
+  name: storage-app
   description: My first laravel example deploy from cloud.terpusat.com
   command: php artisan octane:start
   port: 8000
