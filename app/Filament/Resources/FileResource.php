@@ -150,9 +150,9 @@ class FileResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Document Title'),
                 Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('document_word')
+                Tables\Columns\TextColumn::make('document_word_name')
                 ->limit(20),
-                Tables\Columns\TextColumn::make('document_pdf')
+                Tables\Columns\TextColumn::make('document_pdf_name')
                     ->limit(20),
                 Tables\Columns\TextColumn::make('status')
                 ->badge()

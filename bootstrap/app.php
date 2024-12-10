@@ -21,6 +21,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })->withSchedule(function (Schedule $schedule){
         $schedule->command(DispatchQueueCheckJobsCommand::class)->everyMinute();
         $schedule->command(ScheduleCheckHeartbeatCommand::class)->everyMinute();
-        $schedule->command('files:delete-physical')->everyMinute();
+        $schedule->command(\App\Console\Commands\DeleteCompletedFiles::class)->everyMinute();
     })
     ->create();

@@ -22,6 +22,7 @@
         "laravel/tinker": "^2.9",
         "mews/captcha": "^3.4",
         "oriondevelops/filament-greeter": "^0.2.0",
+        "saade/filament-laravel-log": "^3.2",
         "shuvroroy/filament-spatie-laravel-health": "^2.1",
         "spiral/roadrunner-cli": "^2.6.0",
         "spiral/roadrunner-http": "^3.3.0"

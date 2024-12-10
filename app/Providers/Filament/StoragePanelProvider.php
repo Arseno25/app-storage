@@ -26,6 +26,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 use Orion\FilamentGreeter\GreeterPlugin;
+use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class StoragePanelProvider extends PanelProvider
@@ -79,6 +80,15 @@ class StoragePanelProvider extends PanelProvider
                     ->columnSpan('1xl'),
                 FilamentSpatieLaravelHealthPlugin::make()
                 ->usingPage(Health::class),
+                FilamentLaravelLogPlugin::make()
+                    ->navigationGroup('System Tools')
+                    ->navigationLabel('Logs')
+                    ->navigationIcon('heroicon-o-bug-ant')
+                    ->navigationSort(1)
+                    ->slug('logs')
+                    ->authorize(
+                        fn () => auth()->user()->hasRole('super_admin')
+                    )
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

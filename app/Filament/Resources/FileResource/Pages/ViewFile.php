@@ -27,7 +27,7 @@ class ViewFile extends ViewRecord
     {
         return [
             Actions\Action::make('downloads')
-                ->label('Download File')
+                ->label('Download Document')
                 ->color(Color::Violet)
                 ->icon('heroicon-o-arrow-down-tray')
                 ->button()
@@ -43,7 +43,7 @@ class ViewFile extends ViewRecord
                     foreach ($paths as $type => $path) {
                         if (!file_exists($path)) {
                             return Notification::make()
-                                ->title("File " . strtoupper($type) . " tidak ditemukan")
+                                ->title("File " . strtoupper($type) . " tidak ditemukan atau sudah terhapus")
                                 ->danger()
                                 ->send();
                         }
@@ -143,6 +143,9 @@ class ViewFile extends ViewRecord
                         }),
                         TextEntry::make('completed_at')
                             ->label('File will be deleted after status completion')
+                            ->hidden( function () {
+                                return $this->record->status !== Status::Completed->value;
+                            })
                             ->columnSpanFull()
                             ->color(Color::Red)
                             ->formatStateUsing(function ($state) {
@@ -158,8 +161,9 @@ class ViewFile extends ViewRecord
                 Section::make()
                     ->description('File Information')
                     ->schema([
-                TextEntry::make('document_word'),
-                PdfViewerEntry::make('document_pdf')
+                TextEntry::make('document_word_name')
+                    ->label('Document Word'),
+                PdfViewerEntry::make('document_pdf_name')
                     ->label('View the PDF')
                     ->minHeight('60svh')
                     ->fileUrl(Storage::url($this->record->document_pdf))

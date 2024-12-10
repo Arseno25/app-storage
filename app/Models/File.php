@@ -28,14 +28,32 @@ class File extends Model implements HasMedia
         return $this->belongsTo(User::class, 'admin_id');
     }
 
+    public function getDocumentPdfNameAttribute(): string
+    {
+        return basename($this->document_pdf);
+    }
 
+    public function getDocumentWordNameAttribute(): string
+    {
+        return basename($this->document_word);
+    }
 
     public function deletePhysicalFiles(): void
     {
         $folderPath = 'documents/' . \Str::slug($this->title);
 
-        if (Storage::exists($folderPath)) {
-            Storage::deleteDirectory($folderPath);
+        try {
+            if (Storage::disk('public')->exists($folderPath)) {
+                $files = Storage::disk('public')->files($folderPath);
+                if (!empty($files)) {
+                    Storage::disk('public')->delete($files);
+                }
+                Storage::disk('public')->deleteDirectory($folderPath);
+            } else {
+                throw new \Exception("Folder tidak ditemukan: " . $folderPath);
+            }
+        } catch (\Exception $e) {
+            \Log::error("Error deleting folder: " . $e->getMessage());
         }
     }
 }
