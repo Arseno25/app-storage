@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
                 ->failWhenUsedSpaceIsAbovePercentage(90),
             DebugModeCheck::new(),
             EnvironmentCheck::new(),
-            QueueCheck::new()->onQueue(['notifications']),
             ScheduleCheck::new(),
             CacheCheck::new()->driver('database'),
         ]);
