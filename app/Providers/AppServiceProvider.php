@@ -3,16 +3,16 @@
 namespace App\Providers;
 
 use App\Health\Checks\PhpVersionCheck;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\CacheCheck;
-use Spatie\Health\Checks\Checks\DatabaseCheck;
-use Spatie\Health\Checks\Checks\QueueCheck;
 use Spatie\Health\Checks\Checks\ScheduleCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
-use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
 use Spatie\Health\Checks\Checks\EnvironmentCheck;
 use Illuminate\View\View;
@@ -48,5 +48,11 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::CONTENT_END,
             fn (): View => view('footer'),
         );
+
+        if (! App::hasDebugModeEnabled()) {
+            FilamentAsset::register([
+                Js::make('error', __DIR__.'/../../resources/js/error.js'),
+            ]);
+        }
     }
 }
