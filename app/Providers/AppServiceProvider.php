@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Health\Checks\PhpVersionCheck;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
             EnvironmentCheck::new(),
             ScheduleCheck::new(),
             CacheCheck::new()->driver('database'),
+            PhpVersionCheck::new(),
         ]);
 
         FilamentView::registerRenderHook(
