@@ -47,6 +47,9 @@ class StoragePanelProvider extends PanelProvider
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 BreezyCore::make()
+                    ->enableTwoFactorAuthentication(
+                        force: false, // force the user to enable 2FA before they can use the application (default = false)
+                    )
                     ->myProfileComponents([
                         'personal_info' => UserInfoComponent::class
                     ])
