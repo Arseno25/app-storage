@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use AllowDynamicProperties;
+use App\Enums\ProjectStatus;
 use App\Enums\Status;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
@@ -16,7 +18,7 @@ use IbrahimBougaoua\FilaProgress\Tables\Columns\ProgressBar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProjectResource extends Resource
+#[AllowDynamicProperties] class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
@@ -26,10 +28,11 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationLabel = 'Projects';
 
+
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(1)
+            ->columns(2)
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->label('Project Title')
@@ -64,23 +67,31 @@ class ProjectResource extends Resource
                     ->label('Status')
                     ->required()
                     ->options([
-                        Status::Pending->value => Status::Pending->name,
-                        Status::Revisi->value => Status::Revisi->name,
-                        Status::Revised->value => Status::Revised->name,
-                        Status::Approved->value => Status::Approved->name,
-                        Status::Completed->value => Status::Completed->name
-                    ]),
+                       ProjectStatus::Pending->value => ProjectStatus::Pending->label(),
+                       ProjectStatus::Onprogress->value => ProjectStatus::Onprogress->label(),
+                       ProjectStatus::Completed->value => ProjectStatus::Completed->label(),
+                    ])
+                    ->live()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state === ProjectStatus::Onprogress->value) {
+                            $set('project_progress_disabled', false);
+                        } else {
+                            $set('project_progress_disabled', true);
+                        }
+                    }),
                 Forms\Components\TextInput::make('total_target')
                     ->label('Target Project')
                     ->numeric()
                     ->default(100)
                     ->hidden( auth()->user()->hasRole('users'))
-                    ->disabled( auth()->user()->hasRole('users'))
+                    ->disabled()
                     ->required(),
                 Forms\Components\TextInput::make('project_progress')
                     ->label('Project Progress')
                     ->hidden( auth()->user()->hasRole('users'))
+                    ->disabled(fn ($get) => $get('project_progress_disabled') ?? $get('status') !== ProjectStatus::Onprogress->value)
                     ->numeric()
+                    ->suffix('%')
                     ->required(),
                 SpatieMediaLibraryFileUpload::make('image')
                     ->collection('project_image')
@@ -123,11 +134,9 @@ class ProjectResource extends Resource
                     ->label('Status')
                     ->badge()
                     ->color( fn( $record ) => match ( $record->status ) {
-                        Status::Pending->value => 'primary',
-                        Status::Revisi->value => 'warning',
-                        Status::Revised->value => 'warning',
-                        Status::Approved->value => 'success',
-                        Status::Completed->value => 'success',
+                        ProjectStatus::Pending->value => 'primary',
+                        ProjectStatus::Onprogress->value => 'warning',
+                        ProjectStatus::Completed->value => 'success',
                     })
                     ->sortable(),
 

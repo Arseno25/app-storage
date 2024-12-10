@@ -4,22 +4,16 @@ namespace App\Enums;
 
 enum ProjectStatus: string
 {
-
     case Pending = 'pending'; // File baru diunggah, menunggu review.
-    case Revisi = 'revisi';   // User meminta revisi.
-    case Revised = 'revised'; // File revisi diunggah.
-    case Approved = 'approved'; // User menyetujui file.
+    case Onprogress = 'onprogress'; // User meminta revisi.
     case Completed = 'completed'; // Proses selesai.
 
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'pending',
-            self::Revisi => 'revisi',
-            self::Revised => 'revised',
-            self::Approved => 'approved',
-            self::Completed => 'completed',
+            self::Pending => 'Pending',
+            self::Onprogress => 'On Progress',
+            self::Completed => 'Completed',
         };
     }
-
 }
