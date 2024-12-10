@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Status;
 use App\Models\File;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -29,15 +30,23 @@ class DeleteCompletedFiles extends Command
     {
         $threshold = Carbon::now()->subDays(6)->endOfDay();
 
-        $files = File::where('status', 'completed')
+        $files = File::where('status', Status::Completed)
             ->where('updated_at', '<=', $threshold)
             ->get();
 
+        $deletedCount = 0;
+
         foreach ($files as $file) {
             $this->info("Deleting physical files for File ID {$file->id}...");
-            $file->deletePhysicalFiles();
+
+            try {
+                $file->deletePhysicalFiles();
+                $deletedCount++;
+            } catch (\Exception $e) {
+                $this->error("Failed to delete files for File ID {$file->id}: " . $e->getMessage());
+            }
         }
 
-        $this->info(count($files) . " physical files deleted.");
+        $this->info("{$deletedCount} physical files deleted.");
     }
 }

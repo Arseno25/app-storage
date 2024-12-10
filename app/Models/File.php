@@ -31,12 +31,10 @@ class File extends Model
 
     public function deletePhysicalFiles(): void
     {
-        if ($this->document_word && Storage::exists($this->document_word)) {
-            Storage::delete($this->document_word);
-        }
+        $folderPath = 'documents/' . \Str::slug($this->title);
 
-        if ($this->document_pdf && Storage::exists($this->document_pdf)) {
-            Storage::delete($this->document_pdf);
+        if (Storage::exists($folderPath)) {
+            Storage::deleteDirectory($folderPath);
         }
     }
 }

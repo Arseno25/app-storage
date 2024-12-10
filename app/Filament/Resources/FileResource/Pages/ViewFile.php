@@ -32,9 +32,11 @@ class ViewFile extends ViewRecord
                 ->icon('heroicon-o-arrow-down-tray')
                 ->button()
                 ->action(function () {
+                    // Path folder berdasarkan slug dari title
+                    $baseDir = storage_path('app/public/documents/' . \Str::slug($this->record->title));
                     $paths = [
-                        'pdf' => public_path('storage/' . $this->record->document_pdf),
-                        'word' => public_path('storage/' . $this->record->document_word),
+                        'pdf' => "{$baseDir}/" . basename($this->record->document_pdf),
+                        'word' => "{$baseDir}/" . basename($this->record->document_word),
                     ];
 
                     // Validasi file
@@ -50,13 +52,13 @@ class ViewFile extends ViewRecord
                     // Nama file ZIP
                     $zipFileName = sprintf(
                         '%s_%s_%s.zip',
-                        $this->record->title,
+                        \Str::slug($this->record->title),
                         $this->record->status,
                         now()->timestamp
                     );
 
                     // Path penyimpanan sementara
-                    $tempDir = public_path('storage/temp');
+                    $tempDir = storage_path('app/public/temp');
                     $zipPath = "{$tempDir}/{$zipFileName}";
 
                     // Buat folder 'temp' jika belum ada
@@ -79,7 +81,7 @@ class ViewFile extends ViewRecord
                     }
 
                     Notification::make()
-                        ->title('File ZIP berhasil diunduh: ' . $zipFileName)
+                        ->title('File ZIP berhasil dibuat: ' . $zipFileName)
                         ->success()
                         ->send();
 
@@ -146,9 +148,12 @@ class ViewFile extends ViewRecord
                             ->formatStateUsing(function ($state) {
                                 $deletionDate = Carbon::parse($state)->addDays(6)->endOfDay();
                                 $now = Carbon::now();
-                                $deletionDateFormatted = $deletionDate->format('l, d-m-Y \a\t h:i A');
+                                if ($now->greaterThanOrEqualTo($deletionDate)) {
+                                    return 'Your file has been deleted';
+                                }
+                                $deletionDateFormatted = $deletionDate->format('d-m-Y \a\t h:i A');
                                 return "{$deletionDateFormatted} (" . $deletionDate->diffForHumans($now, true) . " left)";
-                            })
+                            }),
                     ]),
                 Section::make()
                     ->description('File Information')

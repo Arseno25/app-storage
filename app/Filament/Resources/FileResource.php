@@ -129,11 +129,13 @@ class FileResource extends Resource
                     ->required()
                     ->label('File Word')
                     ->preserveFilenames()
+                    ->directory(fn (\Filament\Forms\Get $get) => 'documents/' . \Str::slug($get('title')))
                     ->acceptedFileTypes(['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']),
                 Forms\Components\FileUpload::make('document_pdf')
-                    ->label('File PDF')
                     ->required()
+                    ->label('File PDF')
                     ->preserveFilenames()
+                    ->directory(fn (\Filament\Forms\Get $get) => 'documents/' . \Str::slug($get('title')))
                     ->acceptedFileTypes(['application/pdf']),
             ]);
     }

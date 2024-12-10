@@ -145,8 +145,9 @@ class FileResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Receiver'),
-                Tables\Columns\TextColumn::make('project.title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Document Title'),
+                Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('document_word')
                 ->limit(20),
                 Tables\Columns\TextColumn::make('document_pdf')
@@ -200,7 +201,7 @@ class FileResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProjectRelationManager::class,
+            //
         ];
     }
 
